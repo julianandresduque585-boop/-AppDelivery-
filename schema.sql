@@ -30,6 +30,7 @@ CREATE TABLE Plato (
     Precio REAL NOT NULL,
     Descripcion TEXT,
     Foto_Ruta TEXT,
+    Categoria TEXT,
     FOREIGN KEY (ID_Restaurante)
         REFERENCES Restaurante(ID_Restaurante)
 );

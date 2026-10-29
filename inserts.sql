@@ -36,20 +36,20 @@ VALUES
 
 -- 4. PLATOS
 INSERT INTO Plato
-    (ID_Plato, ID_Restaurante, Nombre, Precio, Descripcion, Foto_Ruta)
+    (ID_Plato, ID_Restaurante, Nombre, Precio, Descripcion, Foto_Ruta, Categoria)
 VALUES
-    (1, 1, 'Hamburguesa', 10.00, 'Hamburguesa clasica', 'images/hamburguesa.jpg'),
-    (2, 1, 'Papas Fritas', 5.00, 'Papas fritas crujientes', 'images/papas_fritas.jpg'),
-    (3, 2, 'Pizza', 12.00, 'Pizza de queso', 'images/pizza.jpg'),
-    (4, 2, 'Ensalada', 8.00, 'Ensalada fresca', 'images/ensalada.jpg'),
-    (5, 3, 'Sushi', 15.00, 'Sushi variado', 'images/sushi.jpg'),
-    (6, 3, 'Perro Caliente', 9.00, 'Perro caliente clasico', 'images/perro_caliente.jpg'),
-    (7, 1, 'Arepa Rellena', 9.00, 'Arepa rellena', 'images/Arepa_Rellena.jpg'),
-    (8, 2, 'Salchipapa', 11.00, 'Salchipapa tradicional', 'images/salchipapa.jpg'),
-    (9, 3, 'Lasana', 14.00, 'Lasana de carne', 'images/lasana.jpg'),
-    (10, 1, 'Nuggets de Pollo', 8.50, 'Nuggets de pollo', 'images/nuggets.jpg'),
-    (11, 2, 'Sandwich', 7.50, 'Sandwich especial', 'images/sandwich.jpg'),
-    (12, 3, 'Malteada', 6.00, 'Malteada de la casa', 'images/malteada.jpg');
+    (1, 1, 'Hamburguesa', 10.00, 'Hamburguesa clasica', 'images/hamburguesa.jpg' , 'Comida rapida'),
+    (2, 1, 'Papas Fritas', 5.00, 'Papas fritas crujientes', 'images/papas_fritas.jpg' , 'chocolate'),
+    (3, 2, 'Pizza', 12.00, 'Pizza de queso', 'images/pizza.jpg' , 'fresas'),
+    (4, 2, 'Ensalada', 8.00, 'Ensalada fresca', 'images/ensalada.jpg' , 'ensalada'),
+    (5, 3, 'Sushi', 15.00, 'Sushi variado', 'images/sushi.jpg' , 'sushi'),
+    (6, 3, 'Perro Caliente', 9.00, 'Perro caliente clasico', 'images/perro_caliente.jpg' , 'perro'),
+    (7, 1, 'Arepa Rellena', 9.00, 'Arepa rellena', 'images/Arepa_Rellena.jpg' , 'arepa'),
+    (8, 2, 'Salchipapa', 11.00, 'Salchipapa tradicional', 'images/salchipapa.jpg' , 'salchipapa'),
+    (9, 3, 'Lasana', 14.00, 'Lasana de carne', 'images/lasana.jpg' , 'lasana'),
+    (10, 1, 'Nuggets de Pollo', 8.50, 'Nuggets de pollo', 'images/nuggets.jpg' , 'nuggets'),
+    (11, 2, 'Sandwich', 7.50, 'Sandwich especial', 'images/sandwich.jpg' , 'sandwich'),
+    (12, 3, 'Malteada', 6.00, 'Malteada de la casa', 'images/malteada.jpg' , 'malteada');
 
 -- 5. PEDIDOS
 INSERT INTO Pedido
@@ -93,6 +93,44 @@ VALUES
     (10, 10, 1, '{"extra":[],"notas":"Con salsa de tomate"}'),
     (11, 11, 2, '{"extra":["Queso"],"notas":"Sin lechuga"}'),
     (12, 12, 2, '{"extra":["Chocolate"],"notas":"Sin crema"}');
+
+COMMIT;
+
+-- RETO PRACTICO 2: INSERCION MASIVA Y TRANSACCIONES
+
+BEGIN TRANSACTION;
+
+WITH RECURSIVE productos(n) AS (
+    SELECT 1
+    UNION ALL
+    SELECT n + 1
+    FROM productos
+    WHERE n < 1000
+)
+INSERT INTO Plato (ID_Plato, ID_Restaurante, Nombre, Precio, Descripcion, Foto_Ruta, Categoria)
+SELECT
+    n,
+    1,
+    'Producto ' || n,
+    ROUND(5.00 + (n % 100), 2),
+    'sin descripcion',
+    'default.jpg',
+    CASE (n % 12)
+        WHEN 0 THEN 'Comida rapida'
+        WHEN 1 THEN 'chocolate'
+        WHEN 2 THEN 'fresas'
+        WHEN 3 THEN 'ensalada'
+        WHEN 4 THEN 'sushi'
+        WHEN 5 THEN 'perro'
+        WHEN 6 THEN 'arepa'
+        WHEN 7 THEN 'salchipapa'
+        WHEN 8 THEN 'lasana'
+        WHEN 9 THEN 'nuggets'
+        WHEN 10 THEN 'sandwich'
+        WHEN 11 THEN 'malteada'
+        ELSE 'Acompañamientos'    
+    END
+FROM productos;
 
 COMMIT;
 

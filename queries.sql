@@ -16,3 +16,14 @@ FROM Pedido p
 JOIN Usuario u ON p.ID_Usuario = u.ID_Usuario
 JOIN Detalle_Pedido dp ON p.ID_Pedido = dp.ID_Pedido
 JOIN Plato pl ON dp.ID_Plato = pl.ID_Plato;
+
+-- Reto 1: Optimización de consulta de platos
+SELECT nombre, precio
+FROM Plato
+WHERE Categoria = 'Comida rapida';
+
+SELECT COUNT(*) AS Total_Platos
+FROM Plato;
+SELECT *
+FROM configuracion
+WHERE json_extract(detalles_json, '$.tema') = 'oscuro';
